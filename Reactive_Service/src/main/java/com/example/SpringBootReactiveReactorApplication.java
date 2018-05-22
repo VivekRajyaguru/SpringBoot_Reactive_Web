@@ -39,6 +39,26 @@ public class SpringBootReactiveReactorApplication {
 							  .andRoute(GET("/movies/{id}/events"), moviehandler::event);
 	}
 	
+	 @Bean
+	  public WebFilter corsFilter() {
+	    return (ServerWebExchange ctx, WebFilterChain chain) -> {
+	      ServerHttpRequest request = ctx.getRequest();
+	      if (CorsUtils.isCorsRequest(request)) {
+	        ServerHttpResponse response = ctx.getResponse();
+	        HttpHeaders headers = response.getHeaders();
+	        headers.add("Access-Control-Allow-Origin", "*");
+	        headers.add("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, OPTIONS ");
+	        headers.add("Access-Control-Max-Age", "3600");
+	        headers.add("Access-Control-Allow-Headers","*");
+	        if (request.getMethod() == HttpMethod.OPTIONS) {
+	          response.setStatusCode(HttpStatus.OK);
+	          return Mono.empty();
+	        }
+	      }
+	      return chain.filter(ctx);
+	    };
+	  }
+	
 	public static void main(String[] args) {
 		SpringApplication.run(SpringBootReactiveReactorApplication.class, args);
 	}
