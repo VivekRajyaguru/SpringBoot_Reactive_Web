@@ -1,0 +1,17 @@
+<ul>
+  <li *ngFor="let item of data">
+    {{item.id}} -- {{item.name}}
+  </li>
+</ul>
+
+<br><br>
+
+<ul>
+  <li *ngFor="let item of data2">
+    {{item.name}} -- {{item.description}}
+  </li>
+</ul>
+<ul>
+<li *ngFor="let item of dataAry$ | async">
+  {{item.id}} -- {{item.title}}
+</ul>
